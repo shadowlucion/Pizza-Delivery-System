@@ -1,15 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  cart: [
-    {
-      pizzaId: 12,
-      name: 'Margreta',
-      quantity: 2,
-      unitPrice: 16,
-      totalPrice: 32,
-    },
-  ],
+  cart: [],
 };
 
 const cartSlice = createSlice({
@@ -33,9 +25,7 @@ const cartSlice = createSlice({
       item.totalPrice = item.quantity * item.unitPrice;
 
       if (item.quantity === 0)
-        state.cart = state.cart.filter(
-          (item) => item.pizzaId !== action.payload,
-        );
+        cartSlice.caseReducers.removeFromcart(state, action);
     },
     clearCart: (state) => {
       state.cart = [];
@@ -50,4 +40,21 @@ export const {
   decreaseItemQty,
   clearCart,
 } = cartSlice.actions;
+
+export const getTotalCartPrice = (state) =>
+  state.cart.cart.reduce((price, item) => price + item.totalPrice, 0);
+
+export const getTotalCartQty = (state) =>
+  state.cart.cart.reduce((sum, item) => sum + item.quantity, 0);
+
+export const getCart = (state) => state.cart.cart;
+
+export const getCurrentPizzaQtyById = (id) => (state) =>
+  state.cart.cart.find((item) => item.pizzaId === id)?.quantity ?? 0;
+
+// (id = (state) =>
+//   state.cart.find((item) => item.pizzaId === id)?.item.quantity ?? 0);
+
 export default cartSlice.reducer;
+
+// reselect library for optimizing

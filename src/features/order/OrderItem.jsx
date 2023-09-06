@@ -3,7 +3,7 @@ function OrderItem({ item, isLoadingIngredients, ingredients }) {
   const { quantity, name, totalPrice } = item;
 
   return (
-    <li>
+    <li className=" py-3">
       <div className="flex flex-wrap items-center justify-between gap-1 py-2">
         <p className="text-lg font-bold">
           <span>{quantity}&times;</span> {name}
@@ -12,6 +12,10 @@ function OrderItem({ item, isLoadingIngredients, ingredients }) {
           {formatCurrency(totalPrice)}
         </p>
       </div>
+      {isLoadingIngredients && <p>Loading...</p>}
+      {!isLoadingIngredients && (
+        <p className="capitalize italic">{ingredients.join(', ')}</p>
+      )}
     </li>
   );
 }
